@@ -2,9 +2,11 @@
   "name": "simplicity-discord",
   "version": "1.0.0",
   "description": "The structure used by the Simplicity Discord bot",
-  "main": "src/index.ts",
-  "repository": "https://github.com/SimplicityDiscord/simplicity-discord.git",
+  "main": "dist/index.js",
   "author": "Simplicity team",
+  "contributors": [
+    "Almeida <almeida@dbm-network.org> (https://almeeida.github.io)"
+  ],
   "license": "MIT",
   "scripts": {
     "lint": "eslint src --ext .ts",
@@ -28,5 +30,17 @@
     "ts-node-dev": "^1.0.0-pre.44",
     "tslint": "^6.0.0",
     "typescript": "^3.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SimplicityDiscord/simplicity-discord.git"
+  },
+  "homepage": "https://github.com/SimplicityDiscord/simplicity-discord#readme",
+  "keywords": [
+    "discord",
+    "discord-api"
+  ],
+  "bugs": {
+    "url": "https://github.com/SimplicityDiscord/simplicity-discord/issues"
   }
 }
