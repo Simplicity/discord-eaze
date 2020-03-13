@@ -1,15 +1,43 @@
-import { GuildMember, Message, MessageEmbed, User } from 'discord.js';
-import CommandContext from '../structures/command/CommandContext';
+import { Guild, GuildMember, Message, MessageEmbed, User, EmbedFieldData } from 'discord.js';
 
-const types = { error: 'RED', normal: process.env.COLOR, warn: '#fdfd96' };
+const types: Record<string, string> = { error: 'RED', normal: process.env.COLOR || '#00a1c3', warn: '#fdfd96' };
+
+interface EmbedAdditions {
+  author?: User;
+  member?: GuildMember;
+}
+
+type EmbedResolvable = EmbedAdditions | Message | User | GuildMember;
+
+interface EmbedOptions {
+  autoAuthor?: boolean;
+  autoFooter?: boolean;
+  autoTimestamp?: boolean;
+  type?: string;
+}
+
+function checkName(resolvable: Guild | GuildMember | User | string): string {
+  if (resolvable instanceof User) return resolvable.tag;
+  if (resolvable instanceof GuildMember) return resolvable.user.tag;
+  if (resolvable instanceof Guild) return resolvable.name;
+  return resolvable;
+}
+
+function checkIcon(resolvable: Guild | GuildMember | User | string): string | null {
+  const opts: { dynamic: boolean; size: 2048 } = { dynamic: true, size: 2048 };
+  if (resolvable instanceof User) return resolvable.displayAvatarURL(opts);
+  if (resolvable instanceof GuildMember) return resolvable.user.displayAvatarURL(opts);
+  if (resolvable instanceof Guild) return resolvable.iconURL(opts);
+  return resolvable;
+}
 
 class SimplicityEmbed extends MessageEmbed {
-  constructor(public embedResolvable = {}, public options = {}, public data = {}) {
+  constructor(public embedResolvable?: EmbedResolvable, public options: EmbedOptions = {}, public data = {}) {
     super(data);
-    this._setupEmbed(embedResolvable, options);
+    this.setupEmbed(embedResolvable || {}, options);
   }
 
-  _setupEmbed(embedResolvable: object, options: object): SimplicityEmbed {
+  setupEmbed(embedResolvable: EmbedResolvable, options: EmbedOptions): this {
     this.options = Object.assign({
       autoAuthor: true,
       autoFooter: true,
@@ -19,23 +47,9 @@ class SimplicityEmbed extends MessageEmbed {
 
     if (embedResolvable instanceof User) embedResolvable = { author: embedResolvable };
     if (embedResolvable instanceof GuildMember) embedResolvable = { author: embedResolvable.user };
+    if (embedResolvable instanceof Message) embedResolvable = { author: embedResolvable.author };
 
-    if (typeof embedResolvable === 'function' && embedResolvable.name === 'fixedT') {
-      embedResolvable = { t: embedResolvable };
-    }
-
-    if (embedResolvable instanceof Message) {
-      const context = new CommandContext({ message: embedResolvable });
-      embedResolvable = {
-        author: context.author,
-        t: context.t,
-      };
-    }
-
-    embedResolvable = Object.assign({ author: null, emoji: null, t: null }, embedResolvable);
-
-    this.t = embedResolvable.t;
-    this.emoji = embedResolvable.emoji;
+    embedResolvable = Object.assign({ author: null, emoji: null }, embedResolvable);
 
     if (embedResolvable.author) {
       if (this.options.autoAuthor) this.setAuthor(embedResolvable.author);
@@ -43,10 +57,62 @@ class SimplicityEmbed extends MessageEmbed {
       if (this.options.autoTimestamp) this.setTimestamp();
     }
 
-    const color = types[this.options.type] || types.normal || 'BLUE';
+    const color: string = (this.options.type && types[this.options.type]) || types.normal;
     this.setColor(color);
 
     return this;
+  }
+
+  setColor(color: string): this {
+    return super.setColor(color);
+  }
+
+  setAuthor(name: User | Guild | GuildMember | string = '???', iconURL = '', url = ''): this {
+    const authorName = checkName(name);
+    const authorNameIcon = checkIcon(name);
+    const authorIcon = checkIcon(iconURL);
+    if (authorName) name = authorName;
+    if (authorNameIcon && !iconURL) iconURL = authorNameIcon;
+    if (authorIcon) iconURL = authorIcon;
+
+    return super.setAuthor(name, iconURL, url);
+  }
+
+  setFooter(text: string | User | GuildMember | Guild = '???', iconURL = ''): this {
+    const footerTextName = checkName(text);
+    const footerTextIcon = checkIcon(text);
+    const footerIcon = checkIcon(iconURL);
+    if (footerTextName) text = footerTextName;
+    if (footerTextIcon && !iconURL) iconURL = footerTextIcon;
+    if (footerIcon) iconURL = footerIcon;
+
+    return super.setFooter(text, iconURL);
+  }
+
+  setDescription(description = '???'): this {
+    return super.setDescription(description);
+  }
+
+  setTitle(title = '???'): this {
+    return super.setTitle(title);
+  }
+
+  addField(name = '???', value = '???', inline = false): this {
+    return super.addFields({ inline, name, value });
+  }
+
+  addFields(...fields: EmbedFieldData[]): this {
+    return super.addFields(fields);
+  }
+
+  setThumbnail(url = ''): this {
+    const thumbnail = checkIcon(url) || url;
+    return super.setThumbnail(thumbnail);
+  }
+
+  setImage(url = ''): this {
+    const image = checkIcon(url) || url;
+    return super.setImage(image);
   }
 }
 
