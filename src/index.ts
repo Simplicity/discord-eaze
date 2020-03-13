@@ -1,6 +1,9 @@
+import { config } from 'dotenv';
 import SimplicityClient from './client/SimplicityClient';
-import SimplicityEmbed from './structures/SimplicityEmbed';
-import SimplicityListener from './structures/SimplicityListener';
+import SimplicityEmbed from './interfaces/SimplicityEmbed';
+import SimplicityListener from './interfaces/SimplicityListener';
+
+config();
 
 export default {
   Client: SimplicityClient,

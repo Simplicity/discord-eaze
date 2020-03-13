@@ -12,6 +12,7 @@
     "skipLibCheck": true,
     "sourceMap": false,
     "strict": true,
-    "target": "es2019"
+    "target": "es2019",
+    "typeRoots" : ["./typings"]
   }
 }
