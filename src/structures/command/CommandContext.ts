@@ -10,7 +10,7 @@ interface CommandContextOptions {
   prefix?: string;
   command?: Command;
   query?: string;
-  args?: string[];
+  args: string[];
   guildData?: object;
 }
 
@@ -18,7 +18,7 @@ interface CommandContext extends CommandContextOptions {
   mentions?: MessageMentions;
   member?: GuildMember | null;
   guild?: Guild | null;
-  author?: User;
+  author: User;
   voiceChannel?: VoiceChannel | null | undefined;
   botLanguages?: string[];
   language?: string | undefined;

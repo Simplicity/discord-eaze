@@ -12,6 +12,6 @@ export default {
   Constants,
   Embed: SimplicityEmbed,
   Listener: SimplicityListener,
-  Util: Util,
+  Util,
   util: Util,
 };

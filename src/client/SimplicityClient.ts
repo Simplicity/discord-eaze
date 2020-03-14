@@ -1,15 +1,14 @@
 import { Client, ClientOptions } from 'discord.js';
 import mongoose from 'mongoose';
-import Database from '../database/Database';
+import Constants from '../util/Constants';
 
 interface SimplicityClient extends Client {
   database: typeof mongoose;
 }
 
 class SimplicityClient extends Client {
-  constructor(options: ClientOptions) {
+  constructor(options: ClientOptions = Constants.CLIENT_OPTIONS) {
     super(options);
-    this.database = Database.connect();
   }
 
   login(token = process.env.DISCORD_TOKEN): Promise<string> {
