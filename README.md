@@ -31,7 +31,7 @@
     - [Using yarn](#using-yarn)
     - [Using npm](#using-npm)
 - [Contributors](#contributors)
-
+- [License](#license)
 ** **
 
 ### Overview
@@ -58,3 +58,8 @@ You can either install this package via [yarn](#using-yarn) or [npm](#using-npm)
   <img src="https://cdn.discordapp.com/avatars/385132696135008259/a_7e7e39d2c1d00ba12352a916e3ae3af2.gif?size=20" style="vertical-align:bottom;" />
   <a href="https://discordapp.com/users/385132696135008259"><code>Almeida#0001</code></a>
 </div>
+
+** **
+
+### License
+[MIT](LICENSE)
