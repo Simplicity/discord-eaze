@@ -59,5 +59,7 @@ You can either install this package via [yarn](#using-yarn) or [npm](#using-npm)
   <a href="https://discordapp.com/users/385132696135008259"><code>Almeida#0001</code></a>
 </div>
 
+** **
+
 ### License
 [MIT](LICENSE)
