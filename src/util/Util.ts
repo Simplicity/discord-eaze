@@ -6,7 +6,7 @@ class Util {
   }
 
   // @ts-ignore
-  static getLength(val): number | null {
+  public static getLength(val): number | null {
     if (val instanceof Error) return val.message.length;
 
     if (val === null || val === undefined || val === false) return 0;
@@ -31,7 +31,7 @@ class Util {
   }
 
   // @ts-ignore
-  static fixPlural(val, singular: string, plural = `${singular}s`): string {
+  public static fixPlural(val, singular: string, plural = `${singular}s`): string {
     if (!singular) return '???';
 
     const length = Util.getLength(val);

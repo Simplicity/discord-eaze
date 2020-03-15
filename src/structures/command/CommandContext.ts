@@ -1,3 +1,4 @@
+import { ServerStreamFileResponseOptions } from 'http2';
 import { Message, MessageMentions, GuildMember, Guild, User, VoiceChannel, TextChannel, DMChannel } from 'discord.js';
 import mongoose from 'mongoose';
 import SimplicityClient from '../../client/SimplicityClient';
@@ -19,12 +20,11 @@ interface CommandContext extends CommandContextOptions {
   member?: GuildMember | null;
   guild?: Guild | null;
   author: User;
-  voiceChannel?: VoiceChannel | null | undefined;
+  voiceChannel?: VoiceChannel | null;
   botLanguages?: string[];
-  language?: string | undefined;
-  emoji?: Function;
+  language?: string;
   send?: Function;
-  canEmbed?: boolean | null | undefined;
+  canEmbed?: boolean | null;
   database?: typeof mongoose;
   flags?: object;
   channel?: TextChannel | DMChannel;

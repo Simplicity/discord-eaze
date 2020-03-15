@@ -3,7 +3,7 @@ import { Guild, GuildMember, Message, MessageEmbed, User, EmbedFieldData } from 
 const types: Record<string, string> = { error: 'RED', normal: process.env.COLOR || '#00a1c3', warn: '#fdfd96' };
 
 interface EmbedAdditions {
-  author?: User;
+  author?: User | null;
   member?: GuildMember;
 }
 
@@ -37,19 +37,14 @@ class SimplicityEmbed extends MessageEmbed {
     this.setupEmbed(embedResolvable || {}, options);
   }
 
-  setupEmbed(embedResolvable: EmbedResolvable, options: EmbedOptions): this {
-    this.options = Object.assign({
-      autoAuthor: true,
-      autoFooter: true,
-      autoTimestamp: true,
-      type: 'normal',
-    }, options);
+  private setupEmbed(embedResolvable: EmbedResolvable, options: EmbedOptions): this {
+    this.options = { autoAuthor: true, autoFooter: true, autoTimestamp: true, type: 'normal', ...options };
 
     if (embedResolvable instanceof User) embedResolvable = { author: embedResolvable };
     if (embedResolvable instanceof GuildMember) embedResolvable = { author: embedResolvable.user };
     if (embedResolvable instanceof Message) embedResolvable = { author: embedResolvable.author };
 
-    embedResolvable = Object.assign({ author: null, emoji: null }, embedResolvable);
+    embedResolvable = { author: null, ...embedResolvable };
 
     if (embedResolvable.author) {
       if (this.options.autoAuthor) this.setAuthor(embedResolvable.author);
@@ -63,11 +58,11 @@ class SimplicityEmbed extends MessageEmbed {
     return this;
   }
 
-  setColor(color: string): this {
+  public setColor(color: string): this {
     return super.setColor(color);
   }
 
-  setAuthor(name: User | Guild | GuildMember | string = '???', iconURL = '', url = ''): this {
+  public setAuthor(name: User | Guild | GuildMember | string = '???', iconURL = '', url = ''): this {
     const authorName = checkName(name);
     const authorNameIcon = checkIcon(name);
     const authorIcon = checkIcon(iconURL);
@@ -78,7 +73,7 @@ class SimplicityEmbed extends MessageEmbed {
     return super.setAuthor(name, iconURL, url);
   }
 
-  setFooter(text: string | User | GuildMember | Guild = '???', iconURL = ''): this {
+  public setFooter(text: string | User | GuildMember | Guild = '???', iconURL = ''): this {
     const footerTextName = checkName(text);
     const footerTextIcon = checkIcon(text);
     const footerIcon = checkIcon(iconURL);
@@ -89,28 +84,28 @@ class SimplicityEmbed extends MessageEmbed {
     return super.setFooter(text, iconURL);
   }
 
-  setDescription(description = '???'): this {
+  public setDescription(description = '???'): this {
     return super.setDescription(description);
   }
 
-  setTitle(title = '???'): this {
+  public setTitle(title = '???'): this {
     return super.setTitle(title);
   }
 
-  addField(name = '???', value = '???', inline = false): this {
+  public addField(name = '???', value = '???', inline = false): this {
     return super.addFields({ inline, name, value });
   }
 
-  addFields(...fields: EmbedFieldData[]): this {
+  public addFields(...fields: EmbedFieldData[]): this {
     return super.addFields(fields);
   }
 
-  setThumbnail(url = ''): this {
+  public setThumbnail(url = ''): this {
     const thumbnail = checkIcon(url) || url;
     return super.setThumbnail(thumbnail);
   }
 
-  setImage(url = ''): this {
+  public setImage(url = ''): this {
     const image = checkIcon(url) || url;
     return super.setImage(image);
   }

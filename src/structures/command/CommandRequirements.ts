@@ -8,7 +8,7 @@ interface Requirements {
 }
 
 class CommandRequirements {
-  static async handle(ctx: CommandContext, requirements: Requirements): Promise<CommandError | void> {
+  public static async handle(ctx: CommandContext, requirements: Requirements): Promise<CommandError> {
     const isDev = await PermissionUtil.verifyDev(ctx.author.id, ctx.client);
     if (!isDev && requirements.devOnly) throw new CommandError('Developer only');
 

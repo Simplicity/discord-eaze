@@ -13,7 +13,7 @@ interface Command {
   responses?: object;
   subcommands?: Command[];
   cooldown?: number;
-  usersCooldown?: CommandCooldown | undefined;
+  usersCooldown?: CommandCooldown;
 }
 
 interface CommandData {
@@ -33,7 +33,7 @@ class Command {
     this.setup(options);
   }
 
-  setup(options: CommandData): void {
+  private setup(options: CommandData): void {
     if (!options.name) throw new Error(`${this.constructor.name} doesn't have name`);
     if (!options.category) throw new Error(`${this.constructor.name} doesn't have category`);
 
@@ -48,11 +48,11 @@ class Command {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  run(ctx: CommandContext, args: object[]): void {
+  protected run(ctx: CommandContext, args: object[]): void {
     throw new Error(`${this.constructor.name} doesn't have a run() method.`);
   }
 
-  async _run(ctx: CommandContext, args?: object[]): Promise<void | undefined> {
+  private async _run(ctx: CommandContext, args?: object[]): Promise<undefined> {
     let inCooldown = true;
     const isDev = await PermissionUtil.verifyDev(ctx.author.id, ctx.client);
     try {
@@ -64,7 +64,10 @@ class Command {
 
       const [subcmd] = ctx.args;
       const subcommand = subcmd && this.getSubCommand(subcmd.toLowerCase());
-      if (subcommand) return await this.runSubCommand(subcommand, ctx);
+      if (subcommand) {
+        await this.runSubCommand(subcommand, ctx);
+        return;
+      }
 
       if (this.requirements) {
         await CommandRequirements.handle(ctx, this.requirements);
@@ -78,7 +81,7 @@ class Command {
     }
   }
 
-  runCooldown(userID: string): CommandError | string | undefined {
+  private runCooldown(userID: string): CommandError | string | undefined {
     const isCooldown = this.usersCooldown?.isCooldown(userID);
     if (typeof isCooldown === 'string' && ['continue', 'ratelimit'].includes(isCooldown)) return isCooldown;
     else if (typeof isCooldown !== 'undefined' && typeof isCooldown !== 'string') {
@@ -88,11 +91,11 @@ class Command {
     return 'continue';
   }
 
-  getSubCommand(name: string): Command | undefined {
+  private getSubCommand(name: string): Command | undefined {
     return this.subcommands?.find((c) => c.name === name || (Array.isArray(c.aliases) && c.aliases.includes(name)));
   }
 
-  runSubCommand(subcommand: Command, context: CommandContext): Promise<void> {
+  private runSubCommand(subcommand: Command, context: CommandContext): Promise<void> {
     context.query = context.query?.replace(`${context.args[0]} `, '').slice(1);
     context.args = context.args.slice(1);
     return subcommand._run(context);

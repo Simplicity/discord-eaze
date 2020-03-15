@@ -2,19 +2,19 @@ import fs, { Stats } from 'fs';
 import path from 'path';
 import { promisify } from 'util';
 
-export const readdir: Function = promisify(fs.readdir);
-export const readFile: Function = promisify(fs.readFile);
-export const stat: Function = promisify(fs.stat);
+export const readdir = promisify(fs.readdir);
+export const readFile = promisify(fs.readFile);
+export const stat = promisify(fs.stat);
 
 class FileUtil {
   constructor() {
     throw new Error(`The ${this.constructor.name} class may not be instantiated.`);
   }
 
-  static async requireDirectory(
+  public static async requireDirectory(
     dirPath: string,
-    error: Function,
-    success?: Function,
+    error = (x: Error, ...args: string[]): void => console.error(x.stack, args),
+    success = (file: File, fileName: string, dirName: string | undefined): void => console.log(dirName, fileName),
     recursive = true,
   ): Promise<object | void> {
     const files = await readdir(dirPath);

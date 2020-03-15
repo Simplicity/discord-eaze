@@ -20,7 +20,7 @@ class CommandError extends Error {
     this.notEmbed = !!options.notEmbed;
   }
 
-  addField(name = '???', value = '???', inline = false): this {
+  public addField(name = '???', value = '???', inline = false): this {
     this.fields.push({ inline, name, value });
     return this;
   }

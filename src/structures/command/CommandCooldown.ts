@@ -7,7 +7,7 @@ class CommandCooldown extends Map {
     this.ratelimitCooldown = ratelimitCooldown;
   }
 
-  isCooldown(userID: string): number | string {
+  public isCooldown(userID: string): number | string {
     const user = this.get(userID);
     if (!user) return 'continue';
 
@@ -35,7 +35,7 @@ class CommandCooldown extends Map {
     return 'continue';
   }
 
-  toMessage(timestamp: number): string {
+  public toMessage(timestamp: number): string {
     const date = new Date(timestamp);
     let time = '';
 
@@ -49,7 +49,7 @@ class CommandCooldown extends Map {
     return time || 'Wait a little bit.';
   }
 
-  add(userID: string): this {
+  public add(userID: string): this {
     return this.set(userID, { ratelimit: 0, ratelimitTimestamp: null, timestamp: Date.now() });
   }
 }

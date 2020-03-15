@@ -3,7 +3,7 @@ import SimplicityClient from '../client/SimplicityClient';
 class SimplicityListener {
   constructor(public client: SimplicityClient) {}
 
-  on(): void {
+  public on(): void {
     throw new Error(`${this.constructor.name} doesn't have an on() method.`);
   }
 }

@@ -5,7 +5,7 @@ import Command from '../structures/command/Command';
 import FileUtil from '../util/FileUtil';
 
 class CommandStore<K, Command> extends Collection<K, Command> {
-  fetch(str: string): Command | undefined {
+  public fetch(str: string): Command | undefined {
     return this.find((c: Command) => c.name.toLowerCase() === str.toLowerCase() || c.aliases.includes(str.toLowerCase()));
   }
 }
@@ -21,13 +21,13 @@ class CommandLoader extends Loader {
     this.commands = new CommandStore();
   }
 
-  async load(): Promise<boolean> {
+  public async load(): Promise<boolean> {
     const error = (x: Error, ...args: string[]): void => console.error(x.stack, args);
     await FileUtil.requireDirectory('src/commands', error, this.loadSuccess.bind(this));
     return true;
   }
 
-  loadSuccess(Cmd: Command, fileName: string, folderName: string): void {
+  private loadSuccess(Cmd: Command, fileName: string, folderName: string): void {
     const command = new Cmd(this.client);
     command.name = fileName;
     if (folderName !== 'commands' && command.category === 'none') command.category = folderName;
