@@ -4,7 +4,7 @@
     "declaration": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "commonjs",
+    "module": "esnext",
     "moduleResolution": "node",
     "outDir": "./dist",
     "pretty": true,
@@ -12,7 +12,6 @@
     "skipLibCheck": true,
     "sourceMap": false,
     "strict": true,
-    "target": "es2019",
-    "typeRoots" : ["./typings"]
+    "target": "es2020"
   }
 }

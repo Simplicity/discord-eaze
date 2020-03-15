@@ -13,6 +13,8 @@ class CommandRequirements {
     if (!isDev && requirements.devOnly) throw new CommandError('Developer only');
 
     if (requirements.guildOnly && !ctx.guild) throw new CommandError('Guild only');
+
+    return true;
   }
 }
 

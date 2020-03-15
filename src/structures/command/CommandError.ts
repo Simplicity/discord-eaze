@@ -1,23 +1,24 @@
 import { EmbedFieldData } from 'discord.js';
 
 interface CommandError {
-  onUsage: boolean;
+  showUsage: boolean;
   fields: EmbedFieldData[];
-  notEmbed: boolean;
+  delete: boolean;
 }
 
 interface ErrorOptions {
-  onUsage?: boolean;
+  showUsage?: boolean;
   notEmbed?: boolean;
+  delete?: boolean;
 }
 
 class CommandError extends Error {
-  constructor(public message = '???', public options: ErrorOptions = { notEmbed: false, onUsage: false }) {
+  constructor(public message = '???', public options: ErrorOptions = { delete: false, showUsage: false }) {
     super(message);
     this.options = options;
-    this.onUsage = !!options.onUsage;
+    this.showUsage = !!options.showUsage;
     this.fields = [];
-    this.notEmbed = !!options.notEmbed;
+    this.delete = !!options.delete;
   }
 
   public addField(name = '???', value = '???', inline = false): this {
