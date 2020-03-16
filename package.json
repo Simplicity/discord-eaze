@@ -1,6 +1,6 @@
 {
   "name": "simplicity-discord",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The structure used by the Simplicity Discord bot",
   "main": "dist/index.js",
   "author": "Simplicity team",
@@ -8,6 +8,9 @@
     "Almeida <almeida@dbm-network.org> (https://almeeida.github.io)"
   ],
   "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "scripts": {
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "prebuild": "yarn lint",
