@@ -1,6 +1,6 @@
-export default {
-  CLIENT_OPTIONS: {
-    disableMentions: 'everyone' as 'everyone',
-    partials: ['MESSAGE', 'CHANNEL'] as ['MESSAGE', 'CHANNEL'],
-  },
+import { ClientOptions } from 'discord.js';
+
+export const CLIENT_OPTIONS: ClientOptions = {
+  disableMentions: 'everyone',
+  partials: ['MESSAGE', 'CHANNEL'],
 };

@@ -1,13 +1,8 @@
 import { Client, ClientOptions } from 'discord.js';
-import mongoose from 'mongoose';
-import Constants from '../util/Constants';
-
-interface SimplicityClient extends Client {
-  database: typeof mongoose;
-}
+import { CLIENT_OPTIONS } from '../util/Constants';
 
 class SimplicityClient extends Client {
-  constructor(options: ClientOptions = Constants.CLIENT_OPTIONS) {
+  constructor(options: ClientOptions = CLIENT_OPTIONS) {
     super(options);
   }
 
