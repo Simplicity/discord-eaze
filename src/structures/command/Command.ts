@@ -17,8 +17,8 @@ interface Command {
 }
 
 interface CommandData {
-  name?: string;
-  category?: string;
+  name: string;
+  category: string;
   aliases?: string[];
   requirements?: object;
   responses?: object;
@@ -27,16 +27,15 @@ interface CommandData {
 }
 
 class Command {
-  constructor(public client: SimplicityClient, public options: CommandData = {}, public parameters = []) {
+  constructor(
+    public client: SimplicityClient, public options: CommandData, public parameters = [],
+  ) {
     this.client = client;
     this.parameters = parameters;
     this.setup(options);
   }
 
   private setup(options: CommandData): void {
-    if (!options.name) throw new Error(`${this.constructor.name} doesn't have name`);
-    if (!options.category) throw new Error(`${this.constructor.name} doesn't have category`);
-
     this.name = options.name;
     this.category = options.category;
     this.aliases = options.aliases || [];
@@ -48,11 +47,11 @@ class Command {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected run(ctx: CommandContext, args: object[]): void {
+  protected run(ctx: CommandContext, ...args: object[]): any {
     throw new Error(`${this.constructor.name} doesn't have a run() method.`);
   }
 
-  private async _run(ctx: CommandContext, args?: object[]): Promise<undefined> {
+  private async _run(ctx: CommandContext, args: object[] = []): Promise<undefined> {
     let inCooldown = true;
     const isDev = await PermissionUtil.verifyDev(ctx.author.id, ctx.client);
     try {
@@ -84,7 +83,7 @@ class Command {
   private runCooldown(userID: string): CommandError | string | undefined {
     const isCooldown = this.usersCooldown?.isCooldown(userID);
     if (typeof isCooldown === 'string' && ['continue', 'ratelimit'].includes(isCooldown)) return isCooldown;
-    else if (typeof isCooldown !== 'undefined' && typeof isCooldown !== 'string') {
+    if (typeof isCooldown !== 'undefined' && typeof isCooldown !== 'string') {
       throw new CommandError(this.usersCooldown?.toMessage(isCooldown), { notEmbed: true });
     }
 
@@ -92,7 +91,8 @@ class Command {
   }
 
   private getSubCommand(name: string): Command | undefined {
-    return this.subcommands?.find((c) => c.name === name || (Array.isArray(c.aliases) && c.aliases.includes(name)));
+    return this.subcommands?.find(
+      (c) => c.name === name || (Array.isArray(c.aliases) && c.aliases.includes(name)));
   }
 
   private runSubCommand(subcommand: Command, context: CommandContext): Promise<void> {

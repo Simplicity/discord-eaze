@@ -1,10 +1,8 @@
 import Util from '../../util/Util';
 
 class CommandCooldown extends Map {
-  constructor(public cooldown: number, public ratelimitCooldown: number = cooldown / 3) {
+  constructor(public cooldown: number, public ratelimit: number = cooldown / 3) {
     super();
-    this.cooldown = cooldown;
-    this.ratelimitCooldown = ratelimitCooldown;
   }
 
   public isCooldown(userID: string): number | string {
@@ -17,14 +15,14 @@ class CommandCooldown extends Map {
       user.ratelimit += 1;
       this.set(userID, user);
       return this.cooldown - time;
-    } else if (this.cooldown < time) {
+    } if (this.cooldown < time) {
       this.delete(userID);
       return 'continue';
-    } else if (user.ratelimit >= 3) {
+    } if (user.ratelimit >= 3) {
       if (!user.ratelimitTimestamp) {
         user.ratelimitTimestamp = current;
         this.set(userID, user);
-      } else if (this.ratelimitCooldown && (current - user.ratelimitTimestamp) > this.ratelimitCooldown) {
+      } else if (this.ratelimit && (current - user.ratelimitTimestamp) > this.ratelimit) {
         user.ratelimitTimestamp = current;
         user.ratelimit = 0;
         this.set(userID, user);

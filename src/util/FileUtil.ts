@@ -7,34 +7,31 @@ export const readFile = promisify(fs.readFile);
 export const stat = promisify(fs.stat);
 
 class FileUtil {
-  constructor() {
-    throw new Error(`The ${this.constructor.name} class may not be instantiated.`);
-  }
-
-  public static async requireDirectory(
+  static async requireDirectory(
     dirPath: string,
-    error = (x: Error, ...args: string[]): void => console.error(x.stack, args),
-    success = (file: File, fileName: string, dirName: string | undefined): void => console.log(dirName, fileName),
     recursive = true,
-  ): Promise<object | void> {
+    callback: (error: Error | null, file: File | null, filename: string, dirname: string) => any,
+  ): Promise<object> {
     const files = await readdir(dirPath);
     const filesObject: Record<string, object> = {};
     return Promise.all(files.map(async (file: string) => {
       const fullPath = path.resolve(dirPath, file);
       if (/\.(js|json)$/.test(file)) {
+        const filename = file.replace(/.js|.json/g, '');
+        const dirname = String(dirPath.split(/\\|\//g).pop());
         try {
           const required = await import(fullPath);
-          if (success) success(required, file.replace(/.js|.json/g, ''), dirPath.split(/\\|\//g).pop());
+          callback(null, required, filename, dirname);
           filesObject[file] = required;
           return required;
         } catch (e) {
-          error(e, file, dirPath);
+          callback(e, null, filename, dirname);
         }
       } else if (recursive) {
         const isDirectory = await stat(fullPath).then((f: Stats) => f.isDirectory());
-        if (isDirectory) return FileUtil.requireDirectory(fullPath, error, success);
+        if (isDirectory) return FileUtil.requireDirectory(fullPath, recursive, callback);
       }
-    })).then(() => filesObject).catch(console.error);
+    })).then(() => filesObject);
   }
 }
 

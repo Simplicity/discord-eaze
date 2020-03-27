@@ -1,11 +1,9 @@
 import SimplicityClient from '../client/SimplicityClient';
 
-class SimplicityListener {
+abstract class SimplicityListener {
   constructor(public client: SimplicityClient) {}
 
-  public on(): void {
-    throw new Error(`${this.constructor.name} doesn't have an on() method.`);
-  }
+  abstract on(): void;
 }
 
 export default SimplicityListener;

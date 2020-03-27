@@ -2,7 +2,7 @@
 
 import CommandContext from '../../command/CommandContext';
 
-const defVal = (o: any, k: string, d: any): any => typeof o[k] === 'undefined' ? d : o[k];
+const defVal = (o: any, k: string, d: any): any => (typeof o[k] === 'undefined' ? d : o[k]);
 
 interface DefaultOptions {
   required: boolean;

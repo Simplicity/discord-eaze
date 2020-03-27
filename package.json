@@ -92,6 +92,6 @@
     }
   },
   "lint-staged": {
-    "*.ts": "tslint -c tslint.json 'src/**/*.ts'"
+    "*.ts": "eslint --fix 'src/**/*.ts'"
   }
 }

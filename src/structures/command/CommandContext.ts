@@ -1,8 +1,12 @@
-import { ServerStreamFileResponseOptions } from 'http2';
-import { Message, MessageMentions, GuildMember, Guild, User, VoiceChannel, TextChannel, DMChannel } from 'discord.js';
-import mongoose from 'mongoose';
+import {
+  Message, MessageMentions, GuildMember, Guild,
+  User, VoiceChannel, TextChannel, DMChannel, NewsChannel,
+} from 'discord.js';
 import SimplicityClient from '../../client/SimplicityClient';
 import Command from './Command';
+
+
+type TextChannelTypes = TextChannel | DMChannel | NewsChannel;
 
 interface CommandContextOptions {
   message: Message;
@@ -15,24 +19,47 @@ interface CommandContextOptions {
   guildData?: object;
 }
 
-interface CommandContext extends CommandContextOptions {
-  mentions?: MessageMentions;
-  member?: GuildMember | null;
-  guild?: Guild | null;
-  author: User;
-  voiceChannel?: VoiceChannel | null;
-  botLanguages?: string[];
-  language?: string;
-  send?: Function;
-  canEmbed?: boolean | null;
-  database?: typeof mongoose;
-  flags?: object;
-  channel?: TextChannel | DMChannel;
-}
-
 class CommandContext {
-  constructor(public data: CommandContextOptions) {
-    const message: Message = data.message;
+  message: Message;
+
+  totalLength: number;
+
+  client: SimplicityClient;
+
+  prefix?: string;
+
+  command?: Command;
+
+  query?: string;
+
+  args: string[];
+
+  guildData?: object;
+
+  mentions?: MessageMentions;
+
+  member?: GuildMember;
+
+  guild?: Guild;
+
+  author: User;
+
+  voiceChannel?: VoiceChannel;
+
+  botLanguages?: string[];
+
+  language?: string;
+
+  send?: Function;
+
+  canEmbed?: boolean;
+
+  channel?: TextChannelTypes;
+
+  flags: object = {};
+
+  constructor(data: CommandContextOptions) {
+    const { message } = data;
 
     this.totalLength = data.totalLength;
     this.prefix = data.prefix;
@@ -43,19 +70,21 @@ class CommandContext {
 
     this.message = message;
     this.mentions = message.mentions;
-    this.member = message.member;
-    this.guild = message.guild;
+
     this.author = message.author;
     this.channel = message.channel;
     this.client = data.client || message.client;
-    this.voiceChannel = this.member?.voice?.channel;
 
     this.send = this.channel.send.bind(this.channel);
-    this.database = this.client?.database;
-    this.canEmbed = this.channel.type !== 'dm' ?
-      this.guild && this.guild.me !== null && this.channel.permissionsFor(this.guild.me)?.has('EMBED_LINKS') :
-      true;
-    this.flags = {};
+    this.canEmbed = this.channel.type !== 'dm'
+      ? this.guild && this.guild.me !== null && this.channel.permissionsFor(this.guild.me)?.has('EMBED_LINKS')
+      : true;
+
+    if (message.member) this.member = message.member;
+    if (message.guild) this.guild = message.guild;
+
+    const voiceChannel = this.member?.voice?.channel;
+    if (voiceChannel) this.voiceChannel = voiceChannel;
   }
 }
 

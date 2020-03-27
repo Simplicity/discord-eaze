@@ -6,7 +6,7 @@ class SimplicityClient extends Client {
     super(options);
   }
 
-  public login(token = process.env.DISCORD_TOKEN): Promise<string> {
+  login(token = process.env.DISCORD_TOKEN): Promise<string> {
     return super.login(token);
   }
 }

@@ -6,7 +6,7 @@ class Loader {
     this.required = !!required;
   }
 
-  public load(): void {
+  load(): void {
     throw new Error(`${this.constructor.name} doesn't have a load() method.`);
   }
 }
