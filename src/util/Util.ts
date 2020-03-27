@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 class Util {
-  public static getLength(val: any): number | null {
+  static getLength(val: any): number | null {
     if (val instanceof Error) return val.message.length;
 
     if (val === null || val === undefined || val === false) return 0;
@@ -20,7 +20,7 @@ class Util {
     return 1;
   }
 
-  public static fixPlural(val: any, singular: string, plural = `${singular}s`): string {
+  static fixPlural(val: any, singular: string, plural = `${singular}s`): string {
     if (!singular) return '???';
 
     const length = Util.getLength(val);

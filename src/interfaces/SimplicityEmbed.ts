@@ -66,7 +66,7 @@ class SimplicityEmbed extends MessageEmbed {
     return this;
   }
 
-  public setColor(color: string): this {
+  setColor(color: string): this {
     return super.setColor(color);
   }
 

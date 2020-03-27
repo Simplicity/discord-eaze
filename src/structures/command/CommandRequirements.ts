@@ -8,7 +8,7 @@ interface Requirements {
 }
 
 class CommandRequirements {
-  public static async handle(
+  static async handle(
     ctx: CommandContext,
     requirements: Requirements,
   ): Promise<CommandError | void> {

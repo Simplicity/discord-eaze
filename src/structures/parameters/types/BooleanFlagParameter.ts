@@ -1,7 +1,7 @@
 import Parameter from './Parameter';
 
 class BooleanFlagParameter extends Parameter {
-  public static parse(): boolean {
+  static parse(): boolean {
     return true;
   }
 }

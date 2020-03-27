@@ -1,24 +1,35 @@
 import Util from '../../util/Util';
 
-class CommandCooldown extends Map {
+interface CooldownUser {
+  timestamp: number;
+  ratelimit: number;
+  ratelimitTimestamp: number | null;
+}
+
+class CommandCooldown extends Map<string, CooldownUser> {
   constructor(public cooldown: number, public ratelimit: number = cooldown / 3) {
     super();
   }
 
-  public isCooldown(userID: string): number | string {
+  isCooldown(userID: string): number | string {
     const user = this.get(userID);
     if (!user) return 'continue';
 
     const current = Date.now();
     const time = current - user.timestamp;
+
     if (this.cooldown > time && user.ratelimit < 3) {
       user.ratelimit += 1;
       this.set(userID, user);
       return this.cooldown - time;
-    } if (this.cooldown < time) {
+    }
+
+    if (this.cooldown < time) {
       this.delete(userID);
       return 'continue';
-    } if (user.ratelimit >= 3) {
+    }
+
+    if (user.ratelimit >= 3) {
       if (!user.ratelimitTimestamp) {
         user.ratelimitTimestamp = current;
         this.set(userID, user);
@@ -33,7 +44,7 @@ class CommandCooldown extends Map {
     return 'continue';
   }
 
-  public toMessage(timestamp: number): string {
+  toMessage(timestamp: number): string {
     const date = new Date(timestamp);
     let time = '';
 
@@ -47,7 +58,7 @@ class CommandCooldown extends Map {
     return time || 'Wait a little bit.';
   }
 
-  public add(userID: string): this {
+  add(userID: string): this {
     return this.set(userID, { ratelimit: 0, ratelimitTimestamp: null, timestamp: Date.now() });
   }
 }

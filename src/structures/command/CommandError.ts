@@ -13,7 +13,9 @@ interface ErrorOptions {
 }
 
 class CommandError extends Error {
-  constructor(public message = '???', public options: ErrorOptions = { delete: false, showUsage: false }) {
+  constructor(
+    public message: string, public options: ErrorOptions = { delete: false, showUsage: false },
+  ) {
     super(message);
     this.options = options;
     this.showUsage = !!options.showUsage;
@@ -21,7 +23,7 @@ class CommandError extends Error {
     this.delete = !!options.delete;
   }
 
-  public addField(name = '???', value = '???', inline = false): this {
+  addField(name: string, value: string, inline = false): this {
     this.fields.push({ inline, name, value });
     return this;
   }
