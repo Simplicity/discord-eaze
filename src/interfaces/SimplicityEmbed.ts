@@ -1,4 +1,6 @@
-import { Guild, GuildMember, Message, MessageEmbed, User, EmbedFieldData } from 'discord.js';
+import {
+  Guild, GuildMember, Message, MessageEmbed, User, EmbedFieldData,
+} from 'discord.js';
 
 const types: Record<string, string> = { error: 'RED', normal: process.env.COLOR || '#00a1c3', warn: '#fdfd96' };
 
@@ -8,7 +10,7 @@ interface EmbedAdditions {
 }
 
 type EmbedResolvable = EmbedAdditions | Message | User | GuildMember;
-
+type ImputResolvable = string | User | GuildMember | Guild;
 interface EmbedOptions {
   autoAuthor?: boolean;
   autoFooter?: boolean;
@@ -32,13 +34,19 @@ function checkIcon(resolvable: Guild | GuildMember | User | string): string | nu
 }
 
 class SimplicityEmbed extends MessageEmbed {
-  constructor(public embedResolvable?: EmbedResolvable, public options: EmbedOptions = {}, public data = {}) {
+  constructor(
+    public embedResolvable?: EmbedResolvable,
+    public options: EmbedOptions = {},
+    public data = {},
+  ) {
     super(data);
     this.setupEmbed(embedResolvable || {}, options);
   }
 
   private setupEmbed(embedResolvable: EmbedResolvable, options: EmbedOptions): this {
-    this.options = { autoAuthor: true, autoFooter: true, autoTimestamp: true, type: 'normal', ...options };
+    this.options = {
+      autoAuthor: true, autoFooter: true, autoTimestamp: true, type: 'normal', ...options,
+    };
 
     if (embedResolvable instanceof User) embedResolvable = { author: embedResolvable };
     if (embedResolvable instanceof GuildMember) embedResolvable = { author: embedResolvable.user };
@@ -62,50 +70,52 @@ class SimplicityEmbed extends MessageEmbed {
     return super.setColor(color);
   }
 
-  public setAuthor(name: User | Guild | GuildMember | string = '???', iconURL = '', url = ''): this {
+  setAuthor(name: ImputResolvable, iconURL?: ImputResolvable, url?: string): this {
     const authorName = checkName(name);
     const authorNameIcon = checkIcon(name);
-    const authorIcon = checkIcon(iconURL);
+    const authorIcon = iconURL && checkIcon(iconURL);
+
     if (authorName) name = authorName;
     if (authorNameIcon && !iconURL) iconURL = authorNameIcon;
     if (authorIcon) iconURL = authorIcon;
 
-    return super.setAuthor(name, iconURL, url);
+    return super.setAuthor(name, String(iconURL), url);
   }
 
-  public setFooter(text: string | User | GuildMember | Guild = '???', iconURL = ''): this {
+  setFooter(text: ImputResolvable, iconURL?: ImputResolvable): this {
     const footerTextName = checkName(text);
     const footerTextIcon = checkIcon(text);
-    const footerIcon = checkIcon(iconURL);
+    const footerIcon = iconURL && checkIcon(iconURL);
+
     if (footerTextName) text = footerTextName;
     if (footerTextIcon && !iconURL) iconURL = footerTextIcon;
     if (footerIcon) iconURL = footerIcon;
 
-    return super.setFooter(text, iconURL);
+    return super.setFooter(text, String(iconURL));
   }
 
-  public setDescription(description = '???'): this {
+  setDescription(description: string): this {
     return super.setDescription(description);
   }
 
-  public setTitle(title = '???'): this {
+  setTitle(title: string): this {
     return super.setTitle(title);
   }
 
-  public addField(name = '???', value = '???', inline = false): this {
+  addField(name: string, value: string, inline = false): this {
     return super.addFields({ inline, name, value });
   }
 
-  public addFields(...fields: EmbedFieldData[]): this {
+  addFields(...fields: EmbedFieldData[]): this {
     return super.addFields(fields);
   }
 
-  public setThumbnail(url = ''): this {
+  setThumbnail(url: string): this {
     const thumbnail = checkIcon(url) || url;
     return super.setThumbnail(thumbnail);
   }
 
-  public setImage(url = ''): this {
+  setImage(url: string): this {
     const image = checkIcon(url) || url;
     return super.setImage(image);
   }
