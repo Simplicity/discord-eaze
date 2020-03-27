@@ -12,7 +12,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
-    "lint": "eslint --fix src/**/*.ts",
+    "lint": "eslint --fix",
     "prebuild": "yarn lint",
     "build": "rimraf dist/ && tsc",
     "pretest": "yarn build",
@@ -31,6 +31,7 @@
     "@types/node": "^13.9.1",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.22.0",
+    "eslint": "^6.8.0",
     "eslint-config-airbnb-typescript": "^7.2.0",
     "eslint-plugin-import": "^2.20.1",
     "husky": "^4.2.3",
@@ -92,6 +93,6 @@
     }
   },
   "lint-staged": {
-    "*.ts": "eslint --fix 'src/**/*.ts'"
+    "*.ts": "eslint --fix"
   }
 }
