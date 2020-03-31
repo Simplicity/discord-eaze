@@ -1,18 +1,16 @@
 {
-  "name": "simplicity-discord",
+  "name": "discord-eaze",
   "version": "1.0.1",
-  "description": "The structure used by the Simplicity Discord bot",
+  "description": "Class based bot framework using discord.js.",
   "main": "dist/index.js",
-  "author": "Simplicity team",
+  "author": "SimplicityDiscord team",
   "contributors": [
-    "Almeida <almeida@dbm-network.org> (https://almeeida.github.io)"
+    "Almeida <almeida@dbm-network.org> (https://almeeida.github.io)",
+    "Tsugami"
   ],
   "license": "MIT",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "scripts": {
-    "lint": "eslint --fix",
+    "lint": "eslint src --fix --ext ts",
     "prebuild": "yarn lint",
     "build": "rimraf dist/ && tsc",
     "pretest": "yarn build",
@@ -31,6 +29,8 @@
     "@types/node": "^13.9.1",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.22.0",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-typescript": "^7.2.0",
     "eslint-plugin-import": "^2.20.1",
@@ -42,15 +42,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SimplicityDiscord/simplicity-discord.git"
+    "url": "https://github.com/SimplicityDiscord/discord-eaze.git"
   },
-  "homepage": "https://github.com/SimplicityDiscord/simplicity-discord#readme",
+  "homepage": "https://github.com/SimplicityDiscord/discord-eaze#readme",
   "keywords": [
     "discord",
-    "discord-api"
+    "discord-js",
+    "discord.js",
+    "discord-api",
+    "framework",
+    "bot",
+    "modular"
   ],
   "bugs": {
-    "url": "https://github.com/SimplicityDiscord/simplicity-discord/issues"
+    "url": "https://github.com/SimplicityDiscord/discord-eaze/issues"
   },
   "config": {
     "commitizen": {
