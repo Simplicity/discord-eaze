@@ -1,0 +1,17 @@
+# Dependency files/directories
+node_modules/
+yarn.lock
+
+# IDE configuration directories/files
+.vscode/
+.idea/
+.eslintrc.json
+tsconfig.json
+
+# Log files
+yarn-error.log
+
+# Git related
+.git/
+.gitignore
+.gitattributes
