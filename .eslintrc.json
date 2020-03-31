@@ -1,0 +1,22 @@
+{
+  "extends": [
+    "airbnb-typescript/base",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "ignorePatterns": ["dist/", "node_modules/"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "allowImportExportEverywhere": true,
+    "ecmaVersion": 2020,
+    "project": "./tsconfig.json",
+    "sourceType": "module"
+  },
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "class-methods-use-this": "off",
+    "consistent-return": "off",
+    "import/no-cycle": "off",
+    "no-param-reassign": "off",
+    "no-underscore-dangle": "off"
+  }
+}
