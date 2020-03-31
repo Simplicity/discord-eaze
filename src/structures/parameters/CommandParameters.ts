@@ -9,7 +9,7 @@ import Parameter from './types/Parameter';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isNull = (n: any): boolean => n === null || n === undefined;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const funcOrString = (f: Function | string, ...args: any[]): any => typeof f === 'function' ? f(...args) : f;
+const funcOrString = (f: Function | string, ...args: any[]): any => (typeof f === 'function' ? f(...args) : f);
 
 const normalizeParam = (options: Parameter): object => {
   const types = options.type.split(/ ?| ?/g);
@@ -30,7 +30,7 @@ class CommandParameters {
   }
 
   public static parseOptions(params: unknown[] = []): object {
-    const length = params.length;
+    const { length } = params;
     const hasFlags = Array.isArray(params[length - 1]);
     return {
       flags: hasFlags ? params[length - 1].map(normalizeParam) : null,
@@ -76,9 +76,9 @@ class CommandParameters {
 
       let arg = args[parseState.argIndex];
       if (
-        opts.parameters.length > args.length &&
-        !param.required && parseState.argIndex === args.length - 1 &&
-        opts.parameters.some((p, pi) => pi > i && p.required)
+        opts.parameters.length > args.length
+        && !param.required && parseState.argIndex === args.length - 1
+        && opts.parameters.some((p, pi) => pi > i && p.required)
       ) {
         parsedArgs.push(undefined);
         continue;
