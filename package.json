@@ -3,34 +3,32 @@
   "version": "1.0.1",
   "description": "Class based bot framework using discord.js.",
   "main": "dist/index.js",
-  "author": "SimplicityDiscord team",
+  "author": "Almeida <almeida@dbm-network.org> (https://almeeida.github.io)",
   "contributors": [
     "Almeida <almeida@dbm-network.org> (https://almeeida.github.io)",
     "Tsugami"
   ],
+  "engines": {
+    "node": ">=12.0.0"
+  },
   "license": "MIT",
   "scripts": {
     "lint": "eslint src --fix --ext ts",
     "prebuild": "yarn lint",
     "build": "rimraf dist/ && tsc",
     "pretest": "yarn build",
-    "dev": "ts-node-dev --respawn --transpileOnly .",
-    "commit": "git-cz"
+    "dev": "ts-node-dev --respawn --transpileOnly ."
   },
   "dependencies": {
-    "discord.js": "github:discordjs/discord.js",
-    "dotenv": "^8.2.0",
-    "mongoose": "^5.9.4"
+    "discord.js": "^12.1.1",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-angular": "^8.3.4",
-    "@types/mongoose": "^5.7.6",
     "@types/node": "^13.9.1",
     "@typescript-eslint/eslint-plugin": "^2.25.0",
     "@typescript-eslint/parser": "^2.22.0",
-    "commitizen": "^4.0.3",
-    "cz-conventional-changelog": "3.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-typescript": "^7.2.0",
     "eslint-plugin-import": "^2.20.1",
@@ -56,11 +54,6 @@
   ],
   "bugs": {
     "url": "https://github.com/SimplicityDiscord/discord-eaze/issues"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   },
   "commitlint": {
     "extends": [
