@@ -1,14 +1,12 @@
 /* eslint-disable no-await-in-loop */
-/* eslint-disable @typescript-eslint/ban-ts-ignore */
 
 import CommandContext from '../command/CommandContext';
 import CommandError from '../command/CommandError';
 import ParameterTypes from './types';
 import Parameter from './types/Parameter';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isNull = (n: any): boolean => n === null || n === undefined;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 const funcOrString = (f: Function | string, ...args: any[]): any => (typeof f === 'function' ? f(...args) : f);
 
 const normalizeParam = (options: Parameter): object => {
@@ -59,7 +57,6 @@ class CommandParameters {
 
           const flagValue = flagArgs.join(' ');
           const missingErr = funcOrString(flag.missingError, context);
-          // tslint:disable-next-line: static-this
           flagsObject[flag.name] = await this.parseParameter(context, flag, flagValue, missingErr);
         }
         context.flags = flagsObject;
@@ -86,7 +83,6 @@ class CommandParameters {
 
       if (param.full) arg = args.slice(parseState.argIndex).join(param.fullJoin || ' ');
 
-      // tslint:disable-next-line: static-this
       const parsedArg = await this.parseParameter(
         context, param, arg, funcOrString(param.missingError, context),
       );

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import CommandContext from '../../command/CommandContext';
 
 const defVal = (o: any, k: string, d: any): any => (typeof o[k] === 'undefined' ? d : o[k]);
@@ -34,11 +32,9 @@ class Parameter {
   }
 
   private static _parse(arg: object, options: object, context: CommandContext): unknown {
-    // tslint:disable-next-line: static-this
     return this.parse.call(options, arg, context);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected static parse(arg: object, ctx: CommandContext): any {
     return arg;
   }

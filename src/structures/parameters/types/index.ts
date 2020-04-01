@@ -1,1 +1,3 @@
-export default { booleanFlag: await import('./BooleanFlagParameter') };
+export default {
+  booleanFlag: await import('./BooleanFlagParameter'),
+};

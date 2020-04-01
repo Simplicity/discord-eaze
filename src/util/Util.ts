@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 class Util {
   static getLength(val: any): number | null {
     if (val instanceof Error) return val.message.length;

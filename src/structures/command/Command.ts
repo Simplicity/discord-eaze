@@ -46,7 +46,6 @@ class Command {
     if (this.cooldown > 0) this.usersCooldown = new CommandCooldown(this.cooldown);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected run(ctx: CommandContext, ...args: object[]): any {
     throw new Error(`${this.constructor.name} doesn't have a run() method.`);
   }
