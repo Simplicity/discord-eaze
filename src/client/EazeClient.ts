@@ -1,7 +1,7 @@
 import { Client, ClientOptions } from 'discord.js';
 import { CLIENT_OPTIONS } from '../util/Constants';
 
-class SimplicityClient extends Client {
+class EazeClient extends Client {
   constructor(options: ClientOptions = CLIENT_OPTIONS) {
     super(options);
   }
@@ -11,4 +11,4 @@ class SimplicityClient extends Client {
   }
 }
 
-export default SimplicityClient;
+export default EazeClient;

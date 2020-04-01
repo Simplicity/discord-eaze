@@ -1,4 +1,4 @@
-import SimplicityClient from '../../client/SimplicityClient';
+import EazeClient from '../../client/EazeClient';
 import PermissionUtil from '../../util/PermissionUtil';
 import CommandContext from './CommandContext';
 import CommandCooldown from './CommandCooldown';
@@ -28,7 +28,7 @@ interface CommandData {
 
 class Command {
   constructor(
-    public client: SimplicityClient, public options: CommandData, public parameters = [],
+    public client: EazeClient, public options: CommandData, public parameters = [],
   ) {
     this.client = client;
     this.parameters = parameters;

@@ -33,7 +33,7 @@ function checkIcon(resolvable: Guild | GuildMember | User | string): string | nu
   return resolvable;
 }
 
-class SimplicityEmbed extends MessageEmbed {
+class EazeEmbed extends MessageEmbed {
   constructor(
     public embedResolvable?: EmbedResolvable,
     public options: EmbedOptions = {},
@@ -121,4 +121,4 @@ class SimplicityEmbed extends MessageEmbed {
   }
 }
 
-export default SimplicityEmbed;
+export default EazeEmbed;

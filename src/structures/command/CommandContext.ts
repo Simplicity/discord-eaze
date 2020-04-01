@@ -2,7 +2,7 @@ import {
   Message, MessageMentions, GuildMember, Guild,
   User, VoiceChannel, TextChannel, DMChannel, NewsChannel,
 } from 'discord.js';
-import SimplicityClient from '../../client/SimplicityClient';
+import EazeClient from '../../client/EazeClient';
 import Command from './Command';
 
 
@@ -11,7 +11,7 @@ type TextChannelTypes = TextChannel | DMChannel | NewsChannel;
 interface CommandContextOptions {
   message: Message;
   totalLength: number;
-  client: SimplicityClient;
+  client: EazeClient;
   prefix?: string;
   command?: Command;
   query?: string;
@@ -24,7 +24,7 @@ class CommandContext {
 
   totalLength: number;
 
-  client: SimplicityClient;
+  client: EazeClient;
 
   prefix?: string;
 

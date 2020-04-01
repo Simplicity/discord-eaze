@@ -1,7 +1,7 @@
-import SimplicityClient from '../client/SimplicityClient';
+import EazeClient from '../client/EazeClient';
 
 class PermissionUtil {
-  public static async verifyDev(userID: string, client?: SimplicityClient): Promise<boolean> {
+  public static async verifyDev(userID: string, client?: EazeClient): Promise<boolean> {
     if (client) {
       const { owner } = await client.fetchApplication();
       if (owner?.id) return owner.id === userID;
