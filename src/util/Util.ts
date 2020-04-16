@@ -1,31 +1,18 @@
-class Util {
-  static getLength(val: any): number | null {
-    if (val instanceof Error) return val.message.length;
+import {
+  Guild, GuildMember, ImageURLOptions, User,
+} from 'discord.js';
 
-    if (val === null || val === undefined || val === false) return 0;
-
-    if (typeof val === 'number') return val;
-    if (typeof val === 'boolean') return 1;
-    if (typeof val === 'string' || typeof val === 'function' || Array.isArray(val)) return val.length;
-
-    if (val.toString === Object.prototype.toString) {
-      const type = val.toString();
-
-      if (type === '[object File]' || type === '[object Map]' || type === '[object Set]') return val.size;
-      if (type === '[object Object]') return Object.keys(val).length;
-    }
-
-    return 1;
-  }
-
-  static fixPlural(val: any, singular: string, plural = `${singular}s`): string {
-    if (!singular) return '???';
-
-    const length = Util.getLength(val);
-    if (length !== 1) return plural;
-
-    return singular;
-  }
+export function resolveName(resolvable: Guild | GuildMember | User | string): string {
+  if (resolvable instanceof User) return resolvable.tag;
+  if (resolvable instanceof GuildMember) return resolvable.user.tag;
+  if (resolvable instanceof Guild) return resolvable.name;
+  return resolvable.toString();
 }
 
-export default Util;
+export function resolveImage(resolvable?: Guild | GuildMember | User | string): string | null {
+  const opts: ImageURLOptions & { dynamic: boolean } = { size: 2048, dynamic: true };
+  if (resolvable instanceof User) return resolvable.displayAvatarURL(opts);
+  if (resolvable instanceof GuildMember) return resolvable.user.displayAvatarURL(opts);
+  if (resolvable instanceof Guild) return resolvable.iconURL(opts);
+  return null;
+}
