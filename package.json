@@ -16,12 +16,13 @@
     "lint": "eslint src --fix --ext ts",
     "prebuild": "yarn lint",
     "build": "rimraf dist/ && tsc",
+    "prepare": "install-peers",
     "pretest": "yarn build",
     "dev": "ts-node-dev --respawn --transpileOnly ."
   },
-  "dependencies": {
-    "discord.js": "^12.1.1",
-    "dotenv": "^8.2.0"
+  "dependencies": {},
+  "peerDependencies": {
+    "discord.js": "^12.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.5",
@@ -33,6 +34,7 @@
     "eslint-config-airbnb-typescript": "^7.2.0",
     "eslint-plugin-import": "^2.20.1",
     "husky": "^4.2.3",
+    "install-peers-cli": "^2.2.0",
     "lint-staged": "^10.0.8",
     "rimraf": "^3.0.2",
     "ts-node-dev": "^1.0.0-pre.44",

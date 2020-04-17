@@ -1,9 +1,7 @@
-import EazeClient from '../client/EazeClient';
+import { EazeClient } from '..';
 
-abstract class EazeListener {
+export abstract class EazeListener {
   constructor(public client: EazeClient) {}
 
   abstract on(): void;
 }
-
-export default EazeListener;

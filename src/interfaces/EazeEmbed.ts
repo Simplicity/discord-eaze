@@ -1,11 +1,11 @@
 import {
   Guild, GuildMember, MessageEmbed, User,
 } from 'discord.js';
-import { resolveImage, resolveName } from '../util/Util';
+import { resolveImage, resolveName } from '..';
 
 export type EmbedImputResolvable = string | User | GuildMember | Guild;
 
-export default class EazeEmbed extends MessageEmbed {
+export class EazeEmbed extends MessageEmbed {
   setAuthor(name: EmbedImputResolvable, iconURL?: EmbedImputResolvable, url?: string): this {
     return super.setAuthor(
       resolveName(name) || name,

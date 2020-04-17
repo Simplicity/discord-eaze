@@ -2,7 +2,7 @@ import {
   Message, MessageMentions, GuildMember, Guild,
   User, VoiceChannel, TextChannel, DMChannel, NewsChannel,
 } from 'discord.js';
-import EazeClient from '../../client/EazeClient';
+import { EazeClient } from '../client/EazeClient';
 import Command from './Command';
 
 
