@@ -1,11 +1,13 @@
 import { Client, ClientOptions } from 'discord.js';
 import { ResolveResponse } from '../command/arguments/Argument';
+import CommandContext from '../command/CommandContext';
 
 export interface EazeClientOptions {
   defaultArgumentOptions?: {
     missingError?: ResolveResponse;
     invalidError?: ResolveResponse;
   };
+  customContext?: typeof CommandContext;
 }
 
 export class EazeClient extends Client {
@@ -14,9 +16,12 @@ export class EazeClient extends Client {
     invalidError?: ResolveResponse;
   };
 
-  constructor(options?: ClientOptions & EazeClientOptions) {
+  customContext?: typeof CommandContext;
+
+  constructor(eazeOptions?: EazeClientOptions, options?: ClientOptions) {
     super(options);
-    this.defaultArgumentOptions = options?.defaultArgumentOptions;
+    this.defaultArgumentOptions = eazeOptions?.defaultArgumentOptions;
+    this.customContext = eazeOptions?.customContext;
   }
 
   /**
