@@ -1,37 +1,72 @@
-import fs, { Stats } from 'fs';
-import path from 'path';
-import { promisify } from 'util';
-
-export const readdir = promisify(fs.readdir);
-export const readFile = promisify(fs.readFile);
-export const stat = promisify(fs.stat);
+import { readdirSync, statSync } from 'fs';
+import { join, resolve, extname } from 'path';
 
 class FileUtil {
   static async requireDirectory(
-    dirPath: string,
-    recursive = true,
-    callback: (error: Error | null, file: File | null, filename: string, dirname: string) => any,
-  ): Promise<object> {
-    const files = await readdir(dirPath);
-    const filesObject: Record<string, object> = {};
-    return Promise.all(files.map(async (file: string) => {
-      const fullPath = path.resolve(dirPath, file);
-      if (/\.(js|json)$/.test(file)) {
-        const filename = file.replace(/.js|.json/g, '');
-        const dirname = String(dirPath.split(/\\|\//g).pop());
-        try {
-          const required = await import(fullPath);
-          callback(null, required, filename, dirname);
-          filesObject[file] = required;
-          return required;
-        } catch (e) {
-          callback(e, null, filename, dirname);
+    directory: string,
+    {
+      recursive = true,
+      extensions = ['.json', '.js', '.ts'],
+      instanceClass,
+      deleteCache = true,
+    }: { recursive: boolean; deleteCache: boolean; extensions: string[]; instanceClass: Function },
+    callback: (error: Error | null, result: any, filepath: string) => any,
+  ): Promise<any> {
+    const filePaths = FileUtil.readdirRecursive(directory, recursive, extensions);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const filepath of filePaths) {
+      try {
+      // eslint-disable-next-line no-await-in-loop
+        const required = await import(resolve(filepath));
+        if (instanceClass) {
+          const classe = FileUtil.resolveClassExport(required, instanceClass);
+          if (classe) {
+            callback(null, classe, filepath);
+          } else if (deleteCache) {
+            delete require.cache[require.resolve(filepath)];
+          }
+        } else {
+          callback(null, required, filepath);
         }
-      } else if (recursive) {
-        const isDirectory = await stat(fullPath).then((f: Stats) => f.isDirectory());
-        if (isDirectory) return FileUtil.requireDirectory(fullPath, recursive, callback);
+      } catch (error) {
+        callback(error, null, filepath);
       }
-    })).then(() => filesObject);
+    }
+  }
+
+  static readdirRecursive(
+    directory: string,
+    recursive = true,
+    extensions = ['.json', '.js', '.ts'],
+  ): string[] {
+    const result = [];
+
+    (function read(dir: string): void {
+      const files = readdirSync(dir);
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const file of files) {
+        const filepath = join(dir, file);
+
+        if (recursive && statSync(filepath).isDirectory()) {
+          read(filepath);
+        } else if (extensions.includes(extname(filepath))) {
+          result.push(filepath);
+        }
+      }
+    }(directory));
+
+    return result;
+  }
+
+  static resolveClassExport<C extends Function>(Required: any, instance: C): C | null {
+    if (Required instanceof instance) return Required as C;
+    if (Required && Required.prototype instanceof instance) return new Required();
+    if (typeof Required === 'function') {
+      const instanced = new Required();
+      if (instanced instanceof instance) return instanced as C;
+    }
+    return null;
   }
 }
 
