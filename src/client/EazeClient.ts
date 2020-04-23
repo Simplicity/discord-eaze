@@ -10,6 +10,10 @@ export interface EazeClientOptions {
   customContext?: typeof CommandContext;
 }
 
+/**
+ * The main hub for interacting with the Discord API, and the starting point for the bot.
+ * @extends {Client}
+ */
 export class EazeClient extends Client {
   defaultArgumentOptions?: {
     missingError?: ResolveResponse;

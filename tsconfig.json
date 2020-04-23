@@ -1,17 +1,25 @@
 {
   "compilerOptions": {
-    "alwaysStrict": true,
     "declaration": false,
-    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
+    "lib": [
+      "es2020"
+    ],
+    "module": "commonjs",
     "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noUnusedParameters": false,
     "outDir": "./dist",
     "pretty": true,
     "removeComments": false,
     "skipLibCheck": true,
     "sourceMap": false,
     "strict": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
     "target": "es2020"
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }

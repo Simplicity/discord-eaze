@@ -1,11 +1,11 @@
 import CommandContext from './CommandContext';
 
-type RestrctionType = 'dm' | 'guild';
+type RestrictionType = 'dm' | 'guild';
 
 interface CommandOptions {
   category?: string;
   aliases?: string[];
-  restriction?: RestrctionType | RestrctionType[];
+  restriction?: RestrictionType | RestrictionType[];
   ownerOnly?: boolean;
 }
 
@@ -16,7 +16,7 @@ class Command {
 
   aliases: string[];
 
-  restriction: RestrctionType[];
+  restriction: RestrictionType[];
 
   ownerOnly: boolean;
 

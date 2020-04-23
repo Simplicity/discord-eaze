@@ -1,11 +1,12 @@
 import { Argument, ReturnResolveFuncArgument } from '../Argument';
 import CommandContext from '../../CommandContext';
 
-class BooleanFlagParameter extends Argument {
+export class BooleanFlagParameter extends Argument {
   parse(): boolean {
     return true;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   resolve(message: CommandContext, content: string): ReturnResolveFuncArgument {
     const args = new RegExp('x', 'gi');
     if (args.test(content)) {
@@ -17,5 +18,3 @@ class BooleanFlagParameter extends Argument {
     return null;
   }
 }
-
-export default BooleanFlagParameter;
