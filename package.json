@@ -25,7 +25,7 @@
     "mongoose": "^5.9.4"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
+    "@commitlint/cli": "^9.0.1",
     "@commitlint/config-angular": "^8.3.4",
     "@types/mongoose": "^5.7.6",
     "@types/node": "^14.0.1",
